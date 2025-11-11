@@ -13,13 +13,15 @@ public class Leaderboard {
     public final ResourceLocation id;
     private final Component title;
     private final Function<PlayerStatsWrapper, Component> playerToValue;
+    private final Function<PlayerStatsWrapper, Integer> playerToIntValue;
     private final Comparator<PlayerStatsWrapper> comparator;
     private final Predicate<PlayerStatsWrapper> validValue;
 
-    public Leaderboard(ResourceLocation id, Component title, Function<PlayerStatsWrapper, Component> valueFunction, Comparator<PlayerStatsWrapper> comparator, Predicate<PlayerStatsWrapper> validValue) {
+    public Leaderboard(ResourceLocation id, Component title, Function<PlayerStatsWrapper, Component> valueFunction, Function<PlayerStatsWrapper, Integer> intValueFunction, Comparator<PlayerStatsWrapper> comparator, Predicate<PlayerStatsWrapper> validValue) {
         this.id = id;
         this.title = title;
         this.playerToValue = valueFunction;
+        this.playerToIntValue = intValueFunction;
         this.comparator = comparator.thenComparing((p1, p2) -> p1.getGameProfile().getName().compareToIgnoreCase(p2.getGameProfile().getName()));
         this.validValue = validValue;
     }
@@ -34,6 +36,10 @@ public class Leaderboard {
 
     public Component createValue(PlayerStatsWrapper player) {
         return playerToValue.apply(player);
+    }
+
+    public int getIntValue(PlayerStatsWrapper player) {
+        return playerToIntValue.apply(player);
     }
 
     public boolean hasValidValue(PlayerStatsWrapper player) {
@@ -70,6 +76,7 @@ public class Leaderboard {
         public FromStat(ResourceLocation id, Component title, Stat<?> stat, boolean ascending, IntFunction<Component> valueFormatter) {
             super(id, title,
                     player -> valueFormatter.apply(player.getStats().getValue(stat)),
+                    player -> player.getStats().getValue(stat),
                     (p1, p2) -> {
                         int result = Integer.compare(p1.getStats().getValue(stat), p2.getStats().getValue(stat));
                         return ascending ? result : -result;
@@ -77,6 +84,7 @@ public class Leaderboard {
                     player -> player.getStats().getValue(stat) > 0
             );
         }
+
 
         public FromStat(ResourceLocation id, Component title, Stat<?> stat, boolean ascending) {
             this(id, title, stat, ascending, DEFAULT);

@@ -1,4 +1,4 @@
-package com.leclowndu93150.leaderboards.integration;
+package com.leclowndu93150.leaderboards.integration.FTBQuests;
 
 import com.leclowndu93150.leaderboards.data.PlayerStatsWrapper;
 import dev.ftb.mods.ftbquests.api.FTBQuestsAPI;

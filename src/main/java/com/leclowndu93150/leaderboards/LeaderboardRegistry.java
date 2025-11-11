@@ -2,7 +2,7 @@ package com.leclowndu93150.leaderboards;
 
 import com.leclowndu93150.leaderboards.data.Leaderboard;
 import com.leclowndu93150.leaderboards.data.PlayerDataTracker;
-import com.leclowndu93150.leaderboards.integration.FTBQuestsIntegration;
+import com.leclowndu93150.leaderboards.integration.FTBQuests.FTBQuestsIntegration;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -98,6 +98,7 @@ public class LeaderboardRegistry {
                             double dph = getDPH(player);
                             return Component.literal(dph < 0D ? "-" : String.format("%.2f", dph));
                         },
+                        player -> (int) (getDPH(player) * 100),
                         Comparator.comparingDouble(LeaderboardRegistry::getDPH).reversed(),
                         player -> getDPH(player) >= 0D
                 )
@@ -121,6 +122,12 @@ public class LeaderboardRegistry {
                                 return Leaderboard.FromStat.TIME.apply(time);
                             }
                         },
+                        player -> {
+                            if (player.server.getPlayerList().getPlayer(player.getUUID()) != null) {
+                                return 0;
+                            }
+                            return (int) (player.server.overworld().getGameTime() - PlayerDataTracker.getLastSeen(player.getUUID()));
+                        },
                         Comparator.comparingLong(p -> {
                             if (p.server.getPlayerList().getPlayer(p.getUUID()) != null) {
                                 return 0L;
@@ -138,6 +145,7 @@ public class LeaderboardRegistry {
                             new ResourceLocation(Leaderboards.MODID, "quest_completions"),
                             Component.translatable("leaderboard.leaderboards.quest_completions"),
                             player -> Component.literal(String.valueOf(FTBQuestsIntegration.getPlayerQuestCompletions(player))),
+                            FTBQuestsIntegration::getPlayerQuestCompletions,
                             Comparator.comparingInt(FTBQuestsIntegration::getPlayerQuestCompletions).reversed(),
                             player -> FTBQuestsIntegration.getPlayerQuestCompletions(player) > 0
                     )
@@ -152,6 +160,7 @@ public class LeaderboardRegistry {
                                 double percentage = FTBQuestsIntegration.getQuestCompletionPercentage(player);
                                 return Component.literal(String.format("%.1f%%", percentage));
                             },
+                            player -> (int) (FTBQuestsIntegration.getQuestCompletionPercentage(player) * 100),
                             Comparator.comparingDouble(FTBQuestsIntegration::getQuestCompletionPercentage).reversed(),
                             player -> FTBQuestsIntegration.getPlayerQuestCompletions(player) > 0
                     )

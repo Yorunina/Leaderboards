@@ -1,8 +1,8 @@
 {
   "leaderboards": {
-    "group": "leaderboards:main",
+    "group": "ftblibrary:info",
     "icon": "minecraft:item/oak_sign",
-    "x": 170,
+    "x": 100,
     "click": "leaderboards:open_leaderboards",
     "config": true,
     "loading_screen": true

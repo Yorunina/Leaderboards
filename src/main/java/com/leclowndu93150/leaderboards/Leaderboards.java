@@ -1,6 +1,7 @@
 package com.leclowndu93150.leaderboards;
 
 import com.leclowndu93150.leaderboards.data.PlayerDataTracker;
+import com.leclowndu93150.leaderboards.integration.FTBQuests.LeaderboardTaskTypes;
 import com.leclowndu93150.leaderboards.network.*;
 import com.mojang.logging.LogUtils;
 import net.minecraft.resources.ResourceLocation;
@@ -20,7 +21,7 @@ import org.slf4j.Logger;
 @Mod(Leaderboards.MODID)
 public class Leaderboards {
     public static final String MODID = "leaderboards";
-    private static final Logger LOGGER = LogUtils.getLogger();
+    public static final Logger LOGGER = LogUtils.getLogger();
     private static final String PROTOCOL_VERSION = "1";
     public static final SimpleChannel NETWORK = NetworkRegistry.newSimpleChannel(
             new ResourceLocation(MODID, "main"),
@@ -63,6 +64,7 @@ public class Leaderboards {
                 LeaderboardResponsePacket::handle);
             
             LeaderboardRegistry.register();
+            LeaderboardTaskTypes.init();
             LOGGER.info("Leaderboards registered");
         });
     }

@@ -27,6 +27,12 @@ public class VanillaStatsRegistry {
                             }
                             return Component.literal(String.valueOf(total));
                         },
+                        (PlayerStatsWrapper player) -> {
+                            for (Stat<?> stat : Stats.BLOCK_MINED) {
+                                return player.getStats().getValue(stat);
+                            }
+                            return 0;
+                        },
                         Comparator.comparingInt((PlayerStatsWrapper player) -> {
                             int total = 0;
                             for (Stat<?> stat : Stats.BLOCK_MINED) {
@@ -54,6 +60,12 @@ public class VanillaStatsRegistry {
                                 total += player.getStats().getValue(stat);
                             }
                             return Component.literal(String.valueOf(total));
+                        },
+                        (PlayerStatsWrapper player) -> {
+                            for (Stat<?> stat : Stats.ITEM_CRAFTED) {
+                                return player.getStats().getValue(stat);
+                            }
+                            return 0;
                         },
                         Comparator.comparingInt((PlayerStatsWrapper player) -> {
                             int total = 0;
@@ -83,6 +95,12 @@ public class VanillaStatsRegistry {
                             }
                             return Component.literal(String.valueOf(total));
                         },
+                        (PlayerStatsWrapper player) -> {
+                            for (Stat<?> stat : Stats.ITEM_USED) {
+                                return player.getStats().getValue(stat);
+                            }
+                            return 0;
+                        },
                         Comparator.comparingInt((PlayerStatsWrapper player) -> {
                             int total = 0;
                             for (Stat<?> stat : Stats.ITEM_USED) {
@@ -111,6 +129,12 @@ public class VanillaStatsRegistry {
                             }
                             return Component.literal(String.valueOf(total));
                         },
+                        (PlayerStatsWrapper player) -> {
+                            for (Stat<?> stat : Stats.ITEM_BROKEN) {
+                                return player.getStats().getValue(stat);
+                            }
+                            return 0;
+                        },
                         Comparator.comparingInt((PlayerStatsWrapper player) -> {
                             int total = 0;
                             for (Stat<?> stat : Stats.ITEM_BROKEN) {
@@ -138,6 +162,12 @@ public class VanillaStatsRegistry {
                                 total += player.getStats().getValue(stat);
                             }
                             return Component.literal(String.valueOf(total));
+                        },
+                        (PlayerStatsWrapper player) -> {
+                            for (Stat<?> stat : Stats.ITEM_PICKED_UP) {
+                                return player.getStats().getValue(stat);
+                            }
+                            return 0;
                         },
                         Comparator.comparingInt((PlayerStatsWrapper player) -> {
                             int total = 0;

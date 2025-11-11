@@ -85,5 +85,12 @@
   "leaderboard.leaderboards.total_items_crafted": "Total Items Crafted",
   "leaderboard.leaderboards.total_items_used": "Total Items Used",
   "leaderboard.leaderboards.total_items_broken": "Total Items Broken",
-  "leaderboard.leaderboards.total_items_picked_up": "Total Items Picked Up"
+  "leaderboard.leaderboards.total_items_picked_up": "Total Items Picked Up",
+  "ftbquests.task.leaderboards.rank_task.leaderboard": "Related LeaderBoard",
+  "ftbquests.task.leaderboards.rank_task.rank": "Need Rank",
+  "ftbquests.task.leaderboards.rank_task.min": "Min Needed",
+  "ftbquests.task.leaderboards.rank_task": "Rank Task",
+  "ftbquests.task.leaderboards.server_achieve_stat.leaderboard": "Related LeaderBoard",
+  "ftbquests.task.leaderboards.server_achieve_stat.value": "Value",
+  "ftbquests.task.leaderboards.server_achieve_stat": "Server Achieve Stat Task"
 }

@@ -34,7 +34,7 @@ import java.util.UUID;
 
 public class ServerAchieveStatTask extends Task {
     private ResourceLocation leaderboard;
-    private int value = 1;
+    private long value = 1;
 
     private static long cachedServerTotal = -1;
     private static long lastCalcTime = 0;
@@ -58,7 +58,7 @@ public class ServerAchieveStatTask extends Task {
 
 
     public String formatMaxProgress() {
-        return Integer.toString(this.value);
+        return Long.toString(this.value);
     }
 
 
@@ -70,21 +70,21 @@ public class ServerAchieveStatTask extends Task {
     public void writeData(CompoundTag nbt) {
         super.writeData(nbt);
         nbt.putString("leaderboard", this.leaderboard.toString());
-        nbt.putInt("value", this.value);
+        nbt.putLong("value", this.value);
     }
 
 
     public void readData(CompoundTag nbt) {
         super.readData(nbt);
         this.leaderboard = ResourceLocation.tryParse(nbt.getString("leaderboard"));
-        this.value = nbt.getInt("value");
+        this.value = nbt.getLong("value");
     }
 
 
     public void writeNetData(FriendlyByteBuf buffer) {
         super.writeNetData(buffer);
         buffer.writeResourceLocation(this.leaderboard);
-        buffer.writeVarInt(this.value);
+        buffer.writeLong(this.value);
     }
 
 
@@ -111,7 +111,7 @@ public class ServerAchieveStatTask extends Task {
                         .nameKey(v -> "leaderboard." + v.getNamespace() + "." + v.getPath())
                         .icon(v -> ItemIcon.getItemIcon(Items.SPAWNER))
                         .create());
-        config.addInt("value", this.value, v -> this.value = v, 1, -2147483647, 2147483647);
+        config.addLong("value", this.value, v -> this.value = v, 1, -2147483647, 2147483647);
     }
 
 

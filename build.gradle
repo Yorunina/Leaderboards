@@ -106,6 +106,7 @@ dependencies {
     modImplementation "curse.maven:architectury-api-419699:5137938"
     modImplementation "curse.maven:ftb-quests-forge-289412:6829212"
     modImplementation "curse.maven:ftb-teams-forge-404468:6130786"
+    implementation files('libs/infinity-forge-2.4.6+1.20.1.jar')
 }
 
 // This block of code expands all declared replace properties in the specified resource targets.

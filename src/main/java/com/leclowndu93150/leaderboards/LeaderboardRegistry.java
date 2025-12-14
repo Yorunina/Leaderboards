@@ -3,10 +3,13 @@ package com.leclowndu93150.leaderboards;
 import com.leclowndu93150.leaderboards.data.Leaderboard;
 import com.leclowndu93150.leaderboards.data.PlayerDataTracker;
 import com.leclowndu93150.leaderboards.integration.FTBQuests.FTBQuestsIntegration;
+import net.lerariemann.infinity.registry.var.ModStats;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.stats.Stat;
 import net.minecraft.stats.Stats;
+import net.minecraftforge.fml.ModList;
 
 import java.util.Comparator;
 import java.util.LinkedHashMap;
@@ -68,11 +71,33 @@ public class LeaderboardRegistry {
         );
 
         LEADERBOARDS.put(
-                new ResourceLocation(Leaderboards.MODID, "distance_walked"),
+                new ResourceLocation("infinity", "portals_opened_stat"),
                 new Leaderboard.FromStat(
-                        new ResourceLocation(Leaderboards.MODID, "distance_walked"),
-                        Component.translatable("leaderboard.leaderboards.distance_walked"),
-                        Stats.CUSTOM.get(Stats.WALK_ONE_CM),
+                        new ResourceLocation("infinity", "portals_opened_stat"),
+                        Component.translatable("leaderboard.infinity.portals_opened_stat"),
+                        ModStats.PORTALS_OPENED_STAT,
+                        false,
+                        Leaderboard.FromStat.DISTANCE
+                )
+        );
+
+        LEADERBOARDS.put(
+                new ResourceLocation("infinity", "dimensions_opened_stat"),
+                new Leaderboard.FromStat(
+                        new ResourceLocation("infinity", "dimensions_opened_stat"),
+                        Component.translatable("leaderboard.infinity.dimensions_opened_stat"),
+                        ModStats.DIMS_OPENED_STAT,
+                        false,
+                        Leaderboard.FromStat.DISTANCE
+                )
+        );
+
+        LEADERBOARDS.put(
+                new ResourceLocation("infinity", "worlds_destroyed_stat"),
+                new Leaderboard.FromStat(
+                        new ResourceLocation("infinity", "worlds_destroyed_stat"),
+                        Component.translatable("leaderboard.infinity.worlds_destroyed_stat"),
+                        ModStats.WORLDS_DESTROYED_STAT,
                         false,
                         Leaderboard.FromStat.DISTANCE
                 )
@@ -88,6 +113,18 @@ public class LeaderboardRegistry {
                         Leaderboard.FromStat.DISTANCE
                 )
         );
+
+        LEADERBOARDS.put(
+                new ResourceLocation(Leaderboards.MODID, "distance_sprinted"),
+                new Leaderboard.FromStat(
+                        new ResourceLocation(Leaderboards.MODID, "distance_sprinted"),
+                        Component.translatable("leaderboard.leaderboards.distance_sprinted"),
+                        Stats.CUSTOM.get(Stats.SPRINT_ONE_CM),
+                        false,
+                        Leaderboard.FromStat.DISTANCE
+                )
+        );
+
 
         LEADERBOARDS.put(
                 new ResourceLocation(Leaderboards.MODID, "deaths_per_hour"),

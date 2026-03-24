@@ -91,7 +91,7 @@ public class ServerAchieveStatTask extends Task {
     public void readNetData(FriendlyByteBuf buffer) {
         super.readNetData(buffer);
         this.leaderboard = buffer.readResourceLocation();
-        this.value = buffer.readVarInt();
+        this.value = buffer.readLong();
     }
 
 

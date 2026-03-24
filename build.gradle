@@ -102,11 +102,14 @@ dependencies {
 
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 
-    modImplementation "curse.maven:ftb-library-forge-404465:6807424"
+    modImplementation "curse.maven:ftb-library-forge-404465:7293430"
     modImplementation "curse.maven:architectury-api-419699:5137938"
-    modImplementation "curse.maven:ftb-quests-forge-289412:6829212"
-    modImplementation "curse.maven:ftb-teams-forge-404468:6130786"
-    implementation files('libs/infinity-forge-2.4.6+1.20.1.jar')
+    modImplementation "curse.maven:ftb-quests-forge-289412:7608804"
+    modImplementation "curse.maven:ftb-teams-forge-404468:7499810"
+
+    modImplementation "curse.maven:architectury-forge-419699:5137938"
+    modImplementation "curse.maven:rhino-416294:6186971"
+    modImplementation "curse.maven:kubejs-forge-238086:5853326"
 }
 
 // This block of code expands all declared replace properties in the specified resource targets.

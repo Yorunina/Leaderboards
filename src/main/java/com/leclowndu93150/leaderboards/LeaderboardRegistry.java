@@ -3,17 +3,17 @@ package com.leclowndu93150.leaderboards;
 import com.leclowndu93150.leaderboards.data.Leaderboard;
 import com.leclowndu93150.leaderboards.data.PlayerDataTracker;
 import com.leclowndu93150.leaderboards.integration.FTBQuests.FTBQuestsIntegration;
-import net.lerariemann.infinity.registry.var.ModStats;
+import com.leclowndu93150.leaderboards.integration.kubejs.LeaderboardRegistryEventJS;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.stats.Stat;
 import net.minecraft.stats.Stats;
-import net.minecraftforge.fml.ModList;
 
 import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.Map;
+
+import static com.leclowndu93150.leaderboards.integration.kubejs.KubeEvents.REGISTRY_LEADERBOARDS_EVENT;
 
 public class LeaderboardRegistry {
     public static final Map<ResourceLocation, Leaderboard> LEADERBOARDS = new LinkedHashMap<>();
@@ -70,38 +70,6 @@ public class LeaderboardRegistry {
                 )
         );
 
-        LEADERBOARDS.put(
-                new ResourceLocation("infinity", "portals_opened_stat"),
-                new Leaderboard.FromStat(
-                        new ResourceLocation("infinity", "portals_opened_stat"),
-                        Component.translatable("leaderboard.infinity.portals_opened_stat"),
-                        ModStats.PORTALS_OPENED_STAT,
-                        false,
-                        Leaderboard.FromStat.DISTANCE
-                )
-        );
-
-        LEADERBOARDS.put(
-                new ResourceLocation("infinity", "dimensions_opened_stat"),
-                new Leaderboard.FromStat(
-                        new ResourceLocation("infinity", "dimensions_opened_stat"),
-                        Component.translatable("leaderboard.infinity.dimensions_opened_stat"),
-                        ModStats.DIMS_OPENED_STAT,
-                        false,
-                        Leaderboard.FromStat.DISTANCE
-                )
-        );
-
-        LEADERBOARDS.put(
-                new ResourceLocation("infinity", "worlds_destroyed_stat"),
-                new Leaderboard.FromStat(
-                        new ResourceLocation("infinity", "worlds_destroyed_stat"),
-                        Component.translatable("leaderboard.infinity.worlds_destroyed_stat"),
-                        ModStats.WORLDS_DESTROYED_STAT,
-                        false,
-                        Leaderboard.FromStat.DISTANCE
-                )
-        );
 
         LEADERBOARDS.put(
                 new ResourceLocation(Leaderboards.MODID, "distance_sprinted"),
@@ -205,6 +173,7 @@ public class LeaderboardRegistry {
         }
 
         VanillaStatsRegistry.register();
+        REGISTRY_LEADERBOARDS_EVENT.post(new LeaderboardRegistryEventJS());
     }
 
     private static double getDPH(com.leclowndu93150.leaderboards.data.PlayerStatsWrapper player) {

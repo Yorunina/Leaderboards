@@ -22,6 +22,7 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.players.GameProfileCache;
 import net.minecraft.stats.ServerStatsCounter;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -120,7 +121,6 @@ public class ServerAchieveStatTask extends Task {
         return Component.translatable("leaderboard." + this.leaderboard.getNamespace() + "." + this.leaderboard.getPath());
     }
 
-
     public int autoSubmitOnPlayerTick() {
         return 100;
     }
@@ -135,44 +135,43 @@ public class ServerAchieveStatTask extends Task {
             return;
         }
 
-        long serverTotal = getOrCalculateServerTotal(player.getServer(), leaderBoard);
+        long serverTotal = getServerTotalFromCache(player.getServer(), leaderBoard);
 
         teamData.setProgress(this, serverTotal);
     }
 
-    private long getOrCalculateServerTotal(MinecraftServer server, Leaderboard leaderboard) {
+    public static long getServerTotalFromCache(MinecraftServer server, Leaderboard leaderboard) {
         long now = System.currentTimeMillis();
         if (now - lastCalcTime < CACHE_DURATION && cachedServerTotal != -1) {
             return cachedServerTotal;
         }
 
         synchronized (CALCULATION_LOCK) {
-            if (now - lastCalcTime < CACHE_DURATION && cachedServerTotal != -1) {
-                return cachedServerTotal;
-            }
+            refreshServerTotalCache(server, leaderboard);
+        }
+        return cachedServerTotal;
+    }
 
-            long total = 0;
+    public static void refreshServerTotalCache(MinecraftServer server, Leaderboard leaderboard) {
+        long total = 0;
 
-            for (ServerPlayer onlinePlayer : server.getPlayerList().getPlayers()) {
-                total += ScoreUtil.getPlayerScore(leaderboard, new PlayerStatsWrapper(onlinePlayer));
-            }
-
-            for (UUID uuid : PlayerDataTracker.get(server.overworld()).getAllPlayerUUIDs()) {
-                if (server.getPlayerList().getPlayer(uuid) != null) {
-                    continue;
-                }
-
-                GameProfile profile = server.getProfileCache().get(uuid).orElse(null);
-                if (profile != null) {
-                    ServerStatsCounter stats = ScoreUtil.loadPlayerStats(server, uuid);
-                    total += ScoreUtil.getPlayerScore(leaderboard, new PlayerStatsWrapper(uuid, profile, stats, server));
-                }
-            }
-
-            cachedServerTotal = total;
-            lastCalcTime = System.currentTimeMillis();
+        for (ServerPlayer onlinePlayer : server.getPlayerList().getPlayers()) {
+            total += ScoreUtil.getPlayerScore(leaderboard, new PlayerStatsWrapper(onlinePlayer));
         }
 
-        return cachedServerTotal;
+        for (UUID uuid : PlayerDataTracker.get(server.overworld()).getAllPlayerUUIDs()) {
+            if (server.getPlayerList().getPlayer(uuid) != null) continue;
+
+            GameProfileCache profileCache = server.getProfileCache();
+            if (profileCache == null) continue;
+            GameProfile profile = profileCache.get(uuid).orElse(null);
+            if (profile == null) continue;
+
+            ServerStatsCounter stats = ScoreUtil.loadPlayerStats(server, uuid);
+            total += ScoreUtil.getPlayerScore(leaderboard, new PlayerStatsWrapper(uuid, profile, stats, server));
+        }
+
+        cachedServerTotal = total;
+        lastCalcTime = System.currentTimeMillis();
     }
 }

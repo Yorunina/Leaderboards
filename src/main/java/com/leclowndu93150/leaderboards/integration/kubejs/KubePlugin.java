@@ -3,6 +3,7 @@ package com.leclowndu93150.leaderboards.integration.kubejs;
 import com.leclowndu93150.leaderboards.LeaderboardRegistry;
 import com.leclowndu93150.leaderboards.VanillaStatsRegistry;
 import com.leclowndu93150.leaderboards.data.Leaderboard;
+import com.leclowndu93150.leaderboards.integration.FTBQuests.ServerAchieveStatTask;
 import dev.latvian.mods.kubejs.KubeJSPlugin;
 import dev.latvian.mods.kubejs.script.BindingsEvent;
 
@@ -21,5 +22,6 @@ public class KubePlugin extends KubeJSPlugin {
         event.add("VanillaStatsRegistry", VanillaStatsRegistry.class);
         event.add("Leaderboard", Leaderboard.class);
         event.add("LeaderboardFromStat", Leaderboard.FromStat.class);
+        event.add("ServerAchieveStatTask", ServerAchieveStatTask.class);
     }
 }
